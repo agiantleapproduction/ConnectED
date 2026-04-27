@@ -1,0 +1,7 @@
+.dashboard-container {
+  min-height: 100vh;
+  background-color: #12122a;
+  color: white;
+  padding: 20px;
+  overflow-y: auto;
+}

@@ -1,0 +1,86 @@
+.feed-container {
+  display: flex; /* stacks post cards vertically */
+  flex-direction: column;
+  gap: 16px; /* space between each post card */
+  max-width: 800px; /* keeps the feed from stretching too wide */
+}
+
+.post-card {
+  background-color: #1a1a35; /* slightly lighter than the page background */
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.post-header {
+  display: flex; /* puts avatar and meta info side by side */
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.avatar {
+  font-size: 2.5rem; /* makes the person icon large */
+  color: #888;
+}
+
+.post-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.post-top-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.username {
+  font-weight: bold;
+  color: white;
+}
+
+.community-badge {
+  font-size: 0.7rem;
+  color: #aaa;
+  border: 1px solid #aaa;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.post-date {
+  color: #aaa;
+  font-size: 0.85rem;
+}
+
+.role-label.student {
+  color: #ff69b4; /* pink for students */
+}
+
+.role-label.teacher {
+  color: #ffd700; /* yellow for teachers */
+}
+
+.post-body {
+  color: #ddd;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.mention {
+  color: #4da6ff; /* blue for @mentions */
+}
+
+.post-actions {
+  display: flex;
+  gap: 6px;
+  color: #888;
+  font-size: 0.85rem;
+}
+
+.post-actions span:not(.dot):hover {
+  color: white; /* highlights action links on hover */
+  cursor: pointer;
+}
