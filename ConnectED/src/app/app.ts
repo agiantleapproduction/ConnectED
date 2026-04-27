@@ -1,5 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
+import { Firebase } from './services/firebaseService';
 
 @Component({
   selector: 'app-root',
@@ -9,4 +10,5 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 })
 export class App {
   protected readonly title = signal('ConnectED');
+  private readonly authService = inject(Firebase);
 }
