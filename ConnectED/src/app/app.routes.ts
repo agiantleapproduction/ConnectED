@@ -1,3 +1,10 @@
 import { Routes } from '@angular/router';
-import { Dashboard } from './components/home-components/dashboard/dashboard';
-export const routes: Routes = [{ path: '', component: Dashboard }];
+
+export const routes: Routes = [
+  {
+    path: '',
+    pathMatch: 'full',
+    loadComponent: () =>
+      import('./components/new-user/new-user').then((m) => m.NewUser),
+  },
+];
