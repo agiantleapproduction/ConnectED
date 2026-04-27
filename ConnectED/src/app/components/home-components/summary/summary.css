@@ -2,11 +2,11 @@
   display: flex; /* stacks post cards vertically */
   flex-direction: column;
   gap: 16px; /* space between each post card */
-  max-width: 800px; /* keeps the feed from stretching too wide */
+  max-width: 100%; /* keeps the feed from stretching too wide */
 }
 
 .post-card {
-  background-color: #1a1a35; /* slightly lighter than the page background */
+  background-color: #506955; /* slightly lighter than the page background */
   border-radius: 8px;
   padding: 16px;
   display: flex;
