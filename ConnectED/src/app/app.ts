@@ -1,10 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 import { FirebaseService } from './services/firebase';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterModule],
+  imports: [RouterOutlet, RouterModule, RouterLink],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

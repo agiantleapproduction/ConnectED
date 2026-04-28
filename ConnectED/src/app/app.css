@@ -1,4 +1,40 @@
 #nav {
-    background-color: beige;
+  background-color: #1f305e;
+}
+#connect {
+  color: rgb(183, 156, 75);
+  letter-spacing: -1px;
+}
+#ed {
+  background-color: #52661f;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-left: 2px;
+}
+#logo {
+  display: flex;
+  align-items: center;
+  font-family: 'Verdana', sans-serif;
+  font-size: 22px;
+  font-weight: bold;
+  background-color: white;
+  border-radius: 8px;
+  padding: 6px 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+.navbar-link {
+  text-decoration: none;
 }
 
+.custom-link {
+  color: #5dbb63;
+  font-weight: 600;
+  padding: 8px 16px;
+  transition: color 0.3s ease;
+}
+
+.custom-link:hover {
+  color: #ffffff !important;
+  border-bottom: 2px solid #5dbb63;
+}
