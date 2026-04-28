@@ -1,1 +1,28 @@
-<p>new-user works!</p>
+<form class="form-signin" (ngSubmit)="onSubmit(registerForm)" #registerForm="ngForm">
+  <div id="logo">
+    <a class="navbar-link" routerLink="">
+      <span id="connect">Connect</span>
+      <span id="ed">Ed</span>
+    </a>
+  </div>
+  <h1 class="h3 mb-3 font-weight-normal">Create Account</h1>
+
+  @if (authError()) {
+    <p class="text-danger mt-2">{{ authError() }}</p>
+  }
+
+  @if (passwordMismatch()) {
+    <p class="text-danger mt-2">Passwords do not match!</p>
+  }
+
+  <label for="inputEmail" class="sr-only">Email address</label>
+  <input type="email" id="inputEmail" name="email" ngModel class="form-control" placeholder="Email address" required autofocus>
+  <label for="inputPassword" class="sr-only">Password</label>
+  <input type="password" id="inputPassword" name="password" ngModel class="form-control" placeholder="Password" required>
+  <label for="inputConfirmPassword" class="sr-only">Confirm Password</label>
+  <input type="password" id="inputConfirmPassword" name="confirmPassword" ngModel class="form-control" placeholder="Confirm Password" required>
+  <ng-hcaptcha (verify)="onCaptchaVerified($event)" (expired)="onCaptchaExpired()"></ng-hcaptcha>
+  <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!captchaToken()">Create Account</button>
+  <br>
+  <a routerLink="/login">Already have an account? Log in!</a>
+</form>

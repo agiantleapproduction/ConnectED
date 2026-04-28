@@ -1,6 +1,13 @@
 import { Injectable, signal } from '@angular/core';
-import { initializeApp } from 'firebase/app';
-import { User, getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { FirebaseError, initializeApp } from 'firebase/app';
+import {
+  User,
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+} from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBnr5uMi2VefhFImTcf5lRrCSg0Su4Ign0",
@@ -20,23 +27,53 @@ const auth = getAuth(app);
 export class FirebaseService {
 
   currentUser = signal<User | null>(null);
-  currentAuthError = signal<String | null>(null);
+  currentAuthError = signal<string | null>(null);
 
-  userSignUp(email: string, password: string): boolean {
+  constructor() {
+    onAuthStateChanged(auth, (user) => {
+      this.currentUser.set(user);
+    });
+  }
+
+  async userSignUp(email: string, password: string): Promise<boolean> {
     if (email == "" || password == "") {
+      this.currentAuthError.set('auth/invalid-input: Email and password are required.');
       return false;
     }
 
-    createUserWithEmailAndPassword(auth, email, password).then((userCredentials) => {
-      this.currentUser.set(userCredentials.user);
+    try {
+      const request = await createUserWithEmailAndPassword(auth, email, password);
+      this.currentUser.set(request.user);
+      this.currentAuthError.set(null);
       return true;
-    }).catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-
-      this.currentAuthError.set(errorCode + ": " + errorMessage);
+    } catch(error: unknown) {
+      if (error instanceof FirebaseError) {
+        this.currentAuthError.set(error.code + ": " + error.message);
+      }
       return false;
-    });
-    return false;
+    }
+  }
+
+  async userLogin(email: string, password: string): Promise<boolean> {
+    if (email == "" || password == "") {
+      this.currentAuthError.set('auth/invalid-input: Email and password are required.');
+      return false;
+    }
+
+    try {
+      const request = await signInWithEmailAndPassword(auth, email, password);
+      this.currentUser.set(request.user);
+      this.currentAuthError.set(null);
+      return true;
+    } catch(error: unknown) {
+      if (error instanceof FirebaseError) {
+        this.currentAuthError.set(error.code + ": " + error.message);
+      }
+      return false;
+    }
+  }
+
+  async userLogout(): Promise<void> {
+    await signOut(auth);
   }
 }

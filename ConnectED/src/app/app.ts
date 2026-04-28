@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 import { FirebaseService } from './services/firebase';
 
 @Component({
@@ -11,4 +11,11 @@ import { FirebaseService } from './services/firebase';
 export class App {
   protected readonly title = signal('ConnectED');
   private readonly firebaseService = inject(FirebaseService);
+  private readonly router = inject(Router);
+
+  async onLogout(event?: Event): Promise<void> {
+    event?.preventDefault();
+    await this.firebaseService.userLogout();
+    await this.router.navigateByUrl('/login');
+  }
 }
