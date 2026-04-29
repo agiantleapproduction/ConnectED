@@ -28,16 +28,19 @@ export class NewUser {
   async onSubmit(form: NgForm): Promise<void> {
     if (form.invalid || !this.captchaToken()) return;
 
-    const { email, password, confirmPassword } = form.value;
+    const { name, email, password, confirmPassword } = form.value;
     const mismatch = password !== confirmPassword;
     this.passwordMismatch.set(mismatch);
 
     if (mismatch) return;
 
-    const ok = await this.firebaseService.userSignUp(email, password);
+    const createUser = await this.firebaseService.userSignUp(email, password);
 
-    if (ok) {
-      await this.router.navigateByUrl('/');
+    if (createUser) {
+      const setName = await this.firebaseService.setUserName(name);
+      if (setName) {
+        await this.router.navigateByUrl('/');
+      }
     }
   }
 }

@@ -7,6 +7,8 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  updateProfile,
+  updateCurrentUser
 } from 'firebase/auth';
 
 const firebaseConfig = {
@@ -75,5 +77,31 @@ export class FirebaseService {
 
   async userLogout(): Promise<void> {
     await signOut(auth);
+  }
+
+  async getUserName(): Promise<string> {
+    if (!this.currentUser()) {
+      return "N/A";
+    }
+
+    return this.currentUser()?.displayName!;
+  }
+
+  async setUserName(name: string): Promise<boolean> {
+    try {
+      const request = updateProfile(
+        this.currentUser()!,
+        {
+          displayName: name
+        }
+      );
+      this.currentAuthError.set(null);
+      return true;
+    } catch (error: unknown) {
+      if (error instanceof FirebaseError) {
+        this.currentAuthError.set(error.code + ": " + error.message);
+      }
+      return false;
+    }
   }
 }
