@@ -8,8 +8,9 @@ import { NgHcaptchaModule } from 'ng-hcaptcha';
   selector: 'app-new-user',
   imports: [RouterLink, FormsModule, NgHcaptchaModule],
   templateUrl: './new-user.html',
-  styleUrl: './new-user.css',
+  styleUrls: ['../login/login.css', './new-user.css'],
 })
+
 export class NewUser {
   private readonly firebaseService = inject(FirebaseService);
   private readonly router = inject(Router);
