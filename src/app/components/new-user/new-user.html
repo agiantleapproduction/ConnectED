@@ -11,12 +11,44 @@
     <p class="text-danger mt-2">{{ authError() }}</p>
   }
 
+  @if (fireStoreError()) {
+    <p class="text-danger mt-2">{{ fireStoreError() }}</p>
+  }
+
   @if (passwordMismatch()) {
     <p class="text-danger mt-2">Passwords do not match!</p>
   }
 
   <label for="inputName" class="sr-only">Name</label>
   <input type="text" id="inputName" name="name" ngModel class="form-control" placeholder="Your Name" required autofocus>
+  <div class="major-field">
+    <label for="inputMajor" class="major-label">Major</label>
+    <select name="major" id="inputMajor" class="form-control major-select" [(ngModel)]="selectedMajor" required>
+      <option value="" disabled>Select your major</option>
+      @for (major of majors(); track major) {
+        <option [value]="major">{{ major }}</option>
+      }
+    </select>
+
+    <button type="button" class="btn btn-outline-secondary add-major-btn" (click)="openAddMajorModal()">
+      Add Missing Major
+    </button>
+  </div>
+
+  @if (showAddMajorModal()) {
+    <div class="modal-backdrop">
+      <div class="modal-card">
+        <h2>Add Missing Major</h2>
+        <input type="text" name="newMajor" class="form-control" [(ngModel)]="newMajorName" placeholder="Enter your major">
+        <button type="button" class="btn btn-primary mt-2" (click)="addMajorFromModal()">
+          Save
+        </button>
+        <button type="button" class="btn btn-secondary mt-2" (click)="closeAddMajorModal()">
+          Cancel
+        </button>
+      </div>
+    </div>
+  }
   <label for="inputEmail" class="sr-only">Email address</label>
   <input type="email" id="inputEmail" name="email" ngModel class="form-control" placeholder="Email address" required autofocus>
   <label for="inputPassword" class="sr-only">Password</label>

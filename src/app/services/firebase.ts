@@ -1,5 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { FirebaseError, initializeApp } from 'firebase/app';
+import { getFirestore, addDoc, collection, FirestoreError, getDocs, QuerySnapshot, setDoc, doc } from 'firebase/firestore';
 import {
   User,
   getAuth,
@@ -7,8 +8,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
-  updateProfile,
-  updateCurrentUser
+  updateProfile
 } from 'firebase/auth';
 
 const firebaseConfig = {
@@ -20,9 +20,10 @@ const firebaseConfig = {
   appId: "1:53259761471:web:aecd4db7dcaae67edb058a"
 };
 
-// Initialize Firebase and Firebase Auth
+// Initialize Firebase App, Auth, and Firestore (db)
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
 @Injectable({ providedIn: 'root' })
 
@@ -30,6 +31,7 @@ export class FirebaseService {
 
   currentUser = signal<User | null>(null);
   currentAuthError = signal<string | null>(null);
+  currentFirestoreError = signal<string | null>(null);
 
   constructor() {
     onAuthStateChanged(auth, (user) => {
@@ -89,7 +91,7 @@ export class FirebaseService {
 
   async setUserName(name: string): Promise<boolean> {
     try {
-      const request = updateProfile(
+      const request = await updateProfile(
         this.currentUser()!,
         {
           displayName: name
@@ -100,6 +102,57 @@ export class FirebaseService {
     } catch (error: unknown) {
       if (error instanceof FirebaseError) {
         this.currentAuthError.set(error.code + ": " + error.message);
+      }
+      return false;
+    }
+  }
+
+  async addMajor(name: string): Promise<boolean> {
+    try {
+      const request = await addDoc(collection(db, "majors"), {
+        name: name
+      });
+      this.currentFirestoreError.set(null);
+      return true;
+    } catch (error: unknown) {
+      if (error instanceof FirestoreError) {
+        this.currentFirestoreError.set(error.code + ": " + error.message);
+      }
+      return false;
+    }
+  }
+
+  async getMajors(): Promise<QuerySnapshot | null>{
+    try {
+      const request = await getDocs(collection(db, "majors"));
+      this.currentFirestoreError.set(null);
+      return request;
+    } catch (error: unknown) {
+      if (error instanceof FirestoreError) {
+        this.currentFirestoreError.set(error.code + ": " + error.message);
+      }
+      return null;
+    }
+  }
+
+  async createUserProfile(name: string, email: string, major: string): Promise<boolean> {
+    if (!this.currentUser()) {
+      this.currentFirestoreError.set("No authenticated user.");
+      return false;
+    }
+
+    try {
+      await setDoc(doc(db, "users", this.currentUser()!.uid), {
+        name,
+        email,
+        major
+      });
+
+      this.currentFirestoreError.set(null);
+      return true;
+    } catch (error: unknown) {
+      if (error instanceof FirestoreError) {
+        this.currentFirestoreError.set(error.code + ": " + error.message);
       }
       return false;
     }
