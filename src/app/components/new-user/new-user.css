@@ -17,24 +17,43 @@
   padding: 1.5rem;
   border-radius: 12px;
 }
-.major-field {
+.option-field {
   display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: 8px;
   margin-bottom: 10px;
 }
-.major-label {
+.option-label {
   margin: 0;
   font-weight: 600;
   font-size: 0.95rem;
 }
-.major-select {
+.option-select {
   width: 100%;
 }
-.add-major-btn {
+.add-option-btn {
   align-self: flex-start;
   margin: 0;
   padding: 0.3rem 0.7rem;
   line-height: 1.4;
+}
+
+.role-pill-group {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.role-pill {
+  border: 1px solid #c9ced6;
+  border-radius: 999px;
+  background: #fff;
+  padding: 0.35rem 0.85rem;
+}
+
+.role-pill.active {
+  background: #0d6efd;
+  border-color: #0d6efd;
+  color: #fff;
 }

@@ -10,6 +10,7 @@ import {
   onAuthStateChanged,
   updateProfile
 } from 'firebase/auth';
+import { UserProfile } from '../models/user-profile';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBnr5uMi2VefhFImTcf5lRrCSg0Su4Ign0",
@@ -135,18 +136,42 @@ export class FirebaseService {
     }
   }
 
-  async createUserProfile(name: string, email: string, major: string): Promise<boolean> {
+  async addDepartment(name: string): Promise<boolean> {
+    try {
+      const request = await addDoc(collection(db, "departments"), {
+        name: name
+      });
+      this.currentFirestoreError.set(null);
+      return true;
+    } catch (error: unknown) {
+      if (error instanceof FirestoreError) {
+        this.currentFirestoreError.set(error.code + ": " + error.message);
+      }
+      return false;
+    }
+  }
+
+  async getDepartments(): Promise<QuerySnapshot | null>{
+    try {
+      const request = await getDocs(collection(db, "departments"));
+      this.currentFirestoreError.set(null);
+      return request;
+    } catch (error: unknown) {
+      if (error instanceof FirestoreError) {
+        this.currentFirestoreError.set(error.code + ": " + error.message);
+      }
+      return null;
+    }
+  }
+
+  async createUserProfile(profile: UserProfile): Promise<boolean> {
     if (!this.currentUser()) {
       this.currentFirestoreError.set("No authenticated user.");
       return false;
     }
 
     try {
-      await setDoc(doc(db, "users", this.currentUser()!.uid), {
-        name,
-        email,
-        major
-      });
+      await setDoc(doc(db, "users", this.currentUser()!.uid), profile);
 
       this.currentFirestoreError.set(null);
       return true;
