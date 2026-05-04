@@ -10,4 +10,6 @@ import { FirebaseService } from '../../../services/firebase';
 })
 export class Dashboard {
   private readonly firebaseService = inject(FirebaseService);
+
+  
 }
