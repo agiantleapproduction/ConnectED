@@ -23,7 +23,14 @@
             </div>
           </div>
 
-          <button class="join-btn" (click)="joinGroupChat(chat.id)">Join</button>
+          <button
+            class="join-btn"
+            (click)="joinGroupChat(chat.id)"
+            [disabled]="joinedChats().has(chat.id)"
+            [class.joined]="joinedChats().has(chat.id)"
+          >
+            {{ joinedChats().has(chat.id) ? 'Joined' : 'Join' }}
+          </button>
         </div>
       }
     </div>
@@ -47,7 +54,14 @@
             </div>
           </div>
 
-          <button class="join-btn" (click)="joinGroupChat(chat.id)">Join</button>
+          <button
+            class="join-btn"
+            (click)="joinGroupChat(chat.id)"
+            [disabled]="joinedChats().has(chat.id)"
+            [class.joined]="joinedChats().has(chat.id)"
+          >
+            {{ joinedChats().has(chat.id) ? 'Joined' : 'Join' }}
+          </button>
         </div>
       }
     </div>

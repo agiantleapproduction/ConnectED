@@ -14,10 +14,15 @@ export class CommunityList {
 
   searchTerm = '';
 
-  // Communities will be loaded from Firebase
+  // All communities from Firebase
   communities = signal<{ id: string; name: string; description: string }[]>([]);
 
-  // Runs when the component loads
+  // My communities — placeholder
+  myCommunities = signal<{ id: string; name: string; description: string }[]>([
+    { id: '1', name: 'Computer Science', description: 'Discuss all things CS' },
+    { id: '2', name: 'Engineering', description: 'Engineering discussions and resources' },
+  ]);
+
   async ngOnInit(): Promise<void> {
     await this.loadCommunities();
   }
@@ -35,7 +40,6 @@ export class CommunityList {
     this.communities.set(communityData);
   }
 
-  // Filters communities based on search term
   get filteredCommunities() {
     return this.communities().filter((community) =>
       community.name.toLowerCase().includes(this.searchTerm.toLowerCase()),
