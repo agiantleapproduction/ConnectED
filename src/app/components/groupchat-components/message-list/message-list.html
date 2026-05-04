@@ -1,1 +1,55 @@
-<p>message-list works!</p>
+<div class="message-list-container">
+  <!-- Page Title -->
+  <div class="page-header">
+    <h1 class="page-title">Group Chats</h1>
+  </div>
+
+  <!-- Course Group Chats Section -->
+  <div class="section">
+    <h2 class="section-title">Course Group Chats</h2>
+    <div class="chats-grid">
+      @for (chat of courseGroupChats; track chat.id) {
+        <div class="chat-card">
+          <div class="chat-header">
+            <div class="chat-icon course">
+              <i class="bi bi-book-fill"></i>
+            </div>
+            <div class="chat-info">
+              <h3 class="chat-name">{{ chat.name }}</h3>
+              <span class="chat-meta">
+                <i class="bi bi-person"></i> {{ chat.members }} members
+              </span>
+              <span class="course-number">{{ chat.courseNumber }}</span>
+            </div>
+          </div>
+
+          <button class="join-btn" (click)="joinGroupChat(chat.id)">Join</button>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- User Group Chats Section -->
+  <div class="section">
+    <h2 class="section-title">User Group Chats</h2>
+    <div class="chats-grid">
+      @for (chat of userGroupChats; track chat.id) {
+        <div class="chat-card">
+          <div class="chat-header">
+            <div class="chat-icon user">
+              <i class="bi bi-people-fill"></i>
+            </div>
+            <div class="chat-info">
+              <h3 class="chat-name">{{ chat.name }}</h3>
+              <span class="chat-meta">
+                <i class="bi bi-person"></i> {{ chat.members }} members
+              </span>
+            </div>
+          </div>
+
+          <button class="join-btn" (click)="joinGroupChat(chat.id)">Join</button>
+        </div>
+      }
+    </div>
+  </div>
+</div>

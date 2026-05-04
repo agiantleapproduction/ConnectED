@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { FirebaseService } from '../../../services/firebase';
 
 @Component({
   selector: 'app-community-list',
@@ -9,27 +10,34 @@ import { RouterLink } from '@angular/router';
   styleUrl: './community-list.css',
 })
 export class CommunityList {
-  // Search term that updates as user types
+  private firebaseService = inject(FirebaseService);
+
   searchTerm = '';
 
-  // communities
-  communities = [
-    { id: '1', name: 'Computer Science161', description: 'Discuss all things CS', members: 120 },
-    {
-      id: '2',
-      name: 'Engineering213',
-      description: 'Engineering discussions and resources',
-      members: 85,
-    },
-    { id: '3', name: 'Business332', description: 'Business and entrepreneurship', members: 95 },
-    { id: '4', name: 'Mathematics160', description: 'Math help and discussions', members: 60 },
-    { id: '5', name: 'Physics160', description: 'Physics concepts and study groups', members: 45 },
-    { id: '6', name: 'Biology214', description: 'Life sciences community', members: 70 },
-  ];
+  // Communities will be loaded from Firebase
+  communities = signal<{ id: string; name: string; description: string }[]>([]);
 
-  // filters the list as searchTerm changes
+  // Runs when the component loads
+  async ngOnInit(): Promise<void> {
+    await this.loadCommunities();
+  }
+
+  private async loadCommunities(): Promise<void> {
+    const snapshot = await this.firebaseService.getCommunityList();
+    if (!snapshot) return;
+
+    const communityData = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      name: String(doc.data()['name'] ?? ''),
+      description: String(doc.data()['description'] ?? ''),
+    }));
+
+    this.communities.set(communityData);
+  }
+
+  // Filters communities based on search term
   get filteredCommunities() {
-    return this.communities.filter((community) =>
+    return this.communities().filter((community) =>
       community.name.toLowerCase().includes(this.searchTerm.toLowerCase()),
     );
   }
