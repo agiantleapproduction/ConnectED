@@ -11,6 +11,7 @@ import {
   updateProfile
 } from 'firebase/auth';
 import { UserProfile } from '../models/user-profile';
+import { CommunityList } from '../components/community-components/community-list/community-list';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBnr5uMi2VefhFImTcf5lRrCSg0Su4Ign0",
@@ -180,6 +181,32 @@ export class FirebaseService {
         this.currentFirestoreError.set(error.code + ": " + error.message);
       }
       return false;
+    }
+  }
+
+  async addCommunity(community: CommunityList): Promise<boolean> {
+    try {
+      const request = await addDoc(collection(db, "communities"), community);
+      this.currentFirestoreError.set(null);
+      return true;
+    } catch (error: unknown) {
+      if (error instanceof FirestoreError) {
+        this.currentFirestoreError.set(error.code + ": " + error.message);
+      }
+      return false;
+    }
+  }
+
+  async getCommunityList(): Promise<QuerySnapshot | null> {
+    try {
+      const request = await getDocs(collection(db, "communities"));
+      this.currentFirestoreError.set(null);
+      return request;
+    } catch (error: unknown) {
+      if (error instanceof FirestoreError) {
+        this.currentFirestoreError.set(error.code + ": " + error.message);
+      }
+      return null;
     }
   }
 }
