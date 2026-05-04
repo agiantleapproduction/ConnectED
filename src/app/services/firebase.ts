@@ -11,6 +11,7 @@ import {
   doc,
   updateDoc,
   arrayUnion,
+  getDoc,
 } from 'firebase/firestore';
 import {
   User,
@@ -178,7 +179,6 @@ export class FirebaseService {
 
     try {
       await setDoc(doc(db, 'users', this.currentUser()!.uid), profile);
-
       this.currentFirestoreError.set(null);
       return true;
     } catch (error: unknown) {
@@ -235,9 +235,16 @@ export class FirebaseService {
     }
 
     try {
+      // Add user ID to the group chat's users array
       await updateDoc(doc(db, 'groupchats', groupChatId), {
-        users: arrayUnion(this.currentUser()!.uid), // adds user ID to the users array
+        users: arrayUnion(this.currentUser()!.uid),
       });
+
+      // Add group chat ID to the user's groupChatIds array
+      await updateDoc(doc(db, 'users', this.currentUser()!.uid), {
+        groupChatIds: arrayUnion(groupChatId),
+      });
+
       this.currentFirestoreError.set(null);
       return true;
     } catch (error: unknown) {
@@ -245,6 +252,23 @@ export class FirebaseService {
         this.currentFirestoreError.set(error.code + ': ' + error.message);
       }
       return false;
+    }
+  }
+
+  async getUserGroupChats(): Promise<string[]> {
+    if (!this.currentUser()) return [];
+
+    try {
+      const userDoc = await getDoc(doc(db, 'users', this.currentUser()!.uid));
+      if (!userDoc.exists()) return [];
+
+      const data = userDoc.data();
+      return data['groupChatIds'] ?? [];
+    } catch (error: unknown) {
+      if (error instanceof FirestoreError) {
+        this.currentFirestoreError.set(error.code + ': ' + error.message);
+      }
+      return [];
     }
   }
 }

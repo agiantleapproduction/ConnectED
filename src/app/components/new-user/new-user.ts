@@ -11,7 +11,6 @@ import { UserProfile, UserRole } from '../../models/user-profile';
   templateUrl: './new-user.html',
   styleUrls: ['../login/login.css', './new-user.css'],
 })
-
 export class NewUser {
   private readonly firebaseService = inject(FirebaseService);
   private readonly router = inject(Router);
@@ -26,12 +25,12 @@ export class NewUser {
   readonly departments = signal<string[]>([]);
   readonly showAddNewModal = signal(false);
 
-  selectedMajor = "";
-  selectedDepartment = "";
+  selectedMajor = '';
+  selectedDepartment = '';
 
-  newOptionName = "";
-  pendingNewMajor = "";
-  pendingNewDepartment = "";
+  newOptionName = '';
+  pendingNewMajor = '';
+  pendingNewDepartment = '';
 
   async ngOnInit(): Promise<void> {
     await Promise.all([this.loadMajors(), this.loadDepartments()]);
@@ -43,7 +42,7 @@ export class NewUser {
     if (!snapshot) return;
 
     const majorNames = snapshot.docs
-      .map((doc) => String(doc.data()["name"] ?? "").trim())
+      .map((doc) => String(doc.data()['name'] ?? '').trim())
       .filter(Boolean)
       .sort((a, b) => a.localeCompare(b));
 
@@ -55,7 +54,7 @@ export class NewUser {
     if (!snapshot) return;
 
     const departmentNames = snapshot.docs
-      .map((doc) => String(doc.data()["name"] ?? "").trim())
+      .map((doc) => String(doc.data()['name'] ?? '').trim())
       .filter(Boolean)
       .sort((a, b) => a.localeCompare(b));
 
@@ -67,7 +66,7 @@ export class NewUser {
   }
 
   openAddNewModal(): void {
-    this.newOptionName = "";
+    this.newOptionName = '';
     this.showAddNewModal.set(true);
   }
 
@@ -81,9 +80,7 @@ export class NewUser {
     if (!role || !option) return;
 
     const items = role == 'student' ? this.majors() : this.departments();
-    const existing = items.find(
-      (item) => item.toLowerCase() == option.toLowerCase()
-    );
+    const existing = items.find((item) => item.toLowerCase() == option.toLowerCase());
 
     if (existing) {
       if (role == 'student') {
@@ -105,7 +102,7 @@ export class NewUser {
       this.selectedDepartment = option;
     }
 
-    this.newOptionName = "";
+    this.newOptionName = '';
     this.closeAddNewModal();
   }
 
@@ -138,20 +135,20 @@ export class NewUser {
       const addMajor = await this.firebaseService.addMajor(this.pendingNewMajor);
 
       if (!addMajor) return;
-      this.pendingNewMajor = "";
+      this.pendingNewMajor = '';
     }
 
     if (role == 'teacher' && this.pendingNewDepartment) {
       const addDepartment = await this.firebaseService.addDepartment(this.pendingNewDepartment);
 
       if (!addDepartment) return;
-      this.pendingNewDepartment = "";
+      this.pendingNewDepartment = '';
     }
 
     const setName = await this.firebaseService.setUserName(name);
     if (!setName) return;
 
-    const profile: UserProfile = { name, email, role, major, department };
+    const profile: UserProfile = { name, email, role, major, department, groupChatIds: [] };
     const saveProfile = await this.firebaseService.createUserProfile(profile);
     if (!saveProfile) return;
 

@@ -1,10 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FirebaseService } from '../../../services/firebase';
 
 @Component({
   selector: 'app-group-card',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './group-card.html',
   styleUrl: './group-card.css',
 })
