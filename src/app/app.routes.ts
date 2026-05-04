@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { Dashboard } from './components/home-components/dashboard/dashboard';
 import { CommunityList } from './components/community-components/community-list/community-list';
+import { GroupCard } from './components/community-components/group-card/group-card';
 import { MessageList } from './components/groupchat-components/message-list/message-list';
 import { NewsFeed } from './components/news-components/news-feed/news-feed';
 import { Login } from './components/login/login';
@@ -27,7 +28,7 @@ export const routes: Routes = [
   },
   {
     path: 'community/:id',
-    component: MessageList,
+    component: GroupCard,
     title: 'Group Chats',
     canActivate: [authGuard],
   },
