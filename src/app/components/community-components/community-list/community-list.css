@@ -1,0 +1,127 @@
+.community-container {
+  min-height: 100vh;
+  background-color: beige;
+  color: white;
+  padding: 30px;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 24px;
+  color: black;        /* dark text on beige background */
+}
+
+/* Search Bar */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: white;
+  border: 1px solid rgb(183, 156, 75);
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin-bottom: 30px;
+  max-width: 500px;
+}
+
+.search-bar i {
+  color: rgb(183, 156, 75);
+  font-size: 1rem;
+}
+
+.search-bar input {
+  background: none;
+  border: none;
+  outline: none;
+  color: black;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.search-bar input::placeholder {
+  color: #aaa;
+}
+
+/* Communities Grid */
+.community-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* Community Card */
+.community-card {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 1px solid rgb(183, 156, 75);
+  transition: border-color 0.2s ease;
+}
+
+.community-card:hover {
+  border-color: rgb(86, 134, 85);   /* green on hover, matches your icon hover */
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.community-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: rgb(183, 156, 75);   /* gold */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: white;
+}
+
+.card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.community-name {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: black;
+  margin: 0;
+}
+
+.member-count {
+  font-size: 0.8rem;
+  color: #777;
+}
+
+.community-description {
+  color: #444;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Join Button */
+.join-btn {
+  margin-top: auto;
+  background-color: rgb(183, 156, 75);   /* gold */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.join-btn:hover {
+  background-color: rgb(86, 134, 85);   /* green on hover */
+}

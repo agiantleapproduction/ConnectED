@@ -26,6 +26,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'community/:id',
+    component: MessageList,
+    title: 'Group Chats',
+    canActivate: [authGuard],
+  },
+  {
     path: 'groupchat',
     component: MessageList,
     title: 'Group Chat',
@@ -40,6 +46,6 @@ export const routes: Routes = [
   {
     path: 'new-user',
     component: NewUser,
-    title: 'Create Account'
-  }
+    title: 'Create Account',
+  },
 ];
