@@ -1,35 +1,74 @@
 <div class="community-container">
+
   <!-- Page Title -->
   <h1 class="page-title">Communities</h1>
 
   <!-- Search Bar -->
   <div class="search-bar">
     <i class="bi bi-search"></i>
-    <input type="text" placeholder="Search communities..." [(ngModel)]="searchTerm" />
+    <input
+      type="text"
+      placeholder="Search communities..."
+      [(ngModel)]="searchTerm"
+    />
   </div>
 
-  <!-- Communities Grid -->
-  <div class="community-grid">
-    @for (community of filteredCommunities; track community.id) {
-      <div class="community-card">
-        <!-- Card Header -->
-        <div class="card-header">
-          <div class="community-icon">
-            <i class="bi bi-people-fill"></i>
+  <!-- My Communities Section -->
+  <div class="section">
+    <h2 class="section-title">My Communities</h2>
+    <div class="community-grid">
+
+      @for (community of myCommunities(); track community.id) {
+        <div class="community-card">
+
+          <div class="card-header">
+            <div class="community-icon">
+              <i class="bi bi-people-fill"></i>
+            </div>
+            <div class="card-info">
+              <h3 class="community-name">{{ community.name }}</h3>
+            </div>
           </div>
-          <div class="card-info">
-            <h3 class="community-name">{{ community.name }}</h3>
-          </div>
+
+          <p class="community-description">{{ community.description }}</p>
+
+          <button class="join-btn" [routerLink]="['/community', community.id]">
+            View Group Chats
+          </button>
+
         </div>
+      }
 
-        <!-- Description -->
-        <p class="community-description">{{ community.description }}</p>
-
-        <!-- Join Button -->
-        <button class="join-btn" [routerLink]="['/community', community.id]">
-          View Group Chats
-        </button>
-      </div>
-    }
+    </div>
   </div>
+
+  <!-- All Communities Section -->
+  <div class="section">
+    <h2 class="section-title">All Communities</h2>
+    <div class="community-grid">
+
+      @for (community of filteredCommunities; track community.id) {
+        <div class="community-card">
+
+          <div class="card-header">
+            <div class="community-icon">
+              <i class="bi bi-people-fill"></i>
+            </div>
+            <div class="card-info">
+              <h3 class="community-name">{{ community.name }}</h3>
+            </div>
+          </div>
+
+          <p class="community-description">{{ community.description }}</p>
+
+          <button class="join-btn" [routerLink]="['/community', community.id]">
+            View Group Chats
+          </button>
+
+        </div>
+      }
+
+    </div>
+  </div>
+
 </div>
