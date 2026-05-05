@@ -138,3 +138,123 @@
   padding-bottom: 8px;
   border-bottom: 2px solid rgb(183, 156, 75);
 }
+
+/* Page header row */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.page-header .page-title {
+  margin-bottom: 0;
+}
+
+/* Create community button */
+.create-btn {
+  background-color: rgb(86, 134, 85);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.create-btn:hover {
+  background-color: rgb(60, 100, 60);
+}
+
+/* Create form card */
+.create-form-card {
+  background-color: white;
+  border: 1px solid rgb(183, 156, 75);
+  border-radius: 10px;
+  padding: 24px;
+  margin-bottom: 30px;
+  max-width: 560px;
+}
+
+.form-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: black;
+  margin-bottom: 12px;
+}
+
+.form-hint {
+  font-size: 0.85rem;
+  color: #555;
+  margin-bottom: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.required {
+  color: #c0392b;
+}
+
+.form-input {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 0.95rem;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.2s ease;
+}
+
+.form-input:focus {
+  border-color: rgb(183, 156, 75);
+}
+
+.form-error {
+  color: #c0392b;
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+}
+
+.form-success {
+  color: rgb(86, 134, 85);
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.submit-btn {
+  background-color: rgb(183, 156, 75);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background-color: rgb(86, 134, 85);
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

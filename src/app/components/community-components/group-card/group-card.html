@@ -2,7 +2,78 @@
   <!-- Page Title -->
   <div class="page-header">
     <h1 class="page-title">Group Chats</h1>
+    <button class="create-btn" (click)="toggleCreateForm()">
+      <i class="bi bi-plus-circle"></i> {{ showCreateForm() ? 'Cancel' : 'New Group Chat' }}
+    </button>
   </div>
+
+  <!-- Create Group Chat Form -->
+  @if (showCreateForm()) {
+    <div class="create-form-card">
+      <h2 class="form-title">Create Group Chat</h2>
+
+      <div class="form-group">
+        <label for="chatName">Name <span class="required">*</span></label>
+        <input
+          id="chatName"
+          type="text"
+          class="form-input"
+          placeholder="e.g. Study Group A"
+          [(ngModel)]="newChatName"
+          maxlength="80"
+        />
+      </div>
+
+      @if (isTeacher()) {
+        <div class="form-group">
+          <label>Type</label>
+          <div class="type-toggle">
+            <button
+              type="button"
+              class="type-btn"
+              [class.active]="newChatType === 'User'"
+              (click)="newChatType = 'User'; newCourseNumber = ''"
+            >User Chat</button>
+            <button
+              type="button"
+              class="type-btn"
+              [class.active]="newChatType === 'Course'"
+              (click)="newChatType = 'Course'"
+            >Course Chat</button>
+          </div>
+        </div>
+
+        @if (newChatType === 'Course') {
+          <div class="form-group">
+            <label for="courseNumber">Course Number <span class="required">*</span></label>
+            <input
+              id="courseNumber"
+              type="text"
+              class="form-input"
+              placeholder="e.g. CSCI 313"
+              [(ngModel)]="newCourseNumber"
+              maxlength="30"
+            />
+          </div>
+        }
+      }
+
+      @if (createError()) {
+        <p class="form-error">{{ createError() }}</p>
+      }
+      @if (createSuccess()) {
+        <p class="form-success">Group chat created! You have been added as a member.</p>
+      }
+
+      <button
+        class="submit-btn"
+        (click)="submitCreateChat()"
+        [disabled]="createSubmitting()"
+      >
+        {{ createSubmitting() ? 'Creating…' : 'Create Chat' }}
+      </button>
+    </div>
+  }
 
   <!-- Course Group Chats Section -->
   <div class="section">
@@ -36,6 +107,9 @@
           </button>
         </div>
       }
+      @if (courseGroupChats().length === 0) {
+        <p class="empty-msg">No course group chats yet.</p>
+      }
     </div>
   </div>
 
@@ -44,7 +118,10 @@
     <h2 class="section-title">User Group Chats</h2>
     <div class="chats-grid">
       @for (chat of userGroupChats(); track chat.id) {
-        <div class="chat-card">
+        <div class="chat-card"
+          [class.clickable]="joinedChats().has(chat.id)"
+          [routerLink]="joinedChats().has(chat.id) ? ['/groupchat', chat.id] : null"
+        >
           <div class="chat-header">
             <div class="chat-icon user">
               <i class="bi bi-people-fill"></i>
@@ -65,6 +142,9 @@
             {{ joinedChats().has(chat.id) ? 'Joined' : 'Join' }}
           </button>
         </div>
+      }
+      @if (userGroupChats().length === 0) {
+        <p class="empty-msg">No user group chats yet.</p>
       }
     </div>
   </div>

@@ -5,14 +5,276 @@
   padding: 30px;
 }
 
+/* Page header row */
 .page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .page-title {
   font-size: 2rem;
   font-weight: bold;
   color: black;
+  margin: 0;
+}
+
+/* Create chat button */
+.create-btn {
+  background-color: rgb(86, 134, 85);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.create-btn:hover {
+  background-color: rgb(60, 100, 60);
+}
+
+/* Create form card */
+.create-form-card {
+  background-color: white;
+  border: 1px solid rgb(183, 156, 75);
+  border-radius: 10px;
+  padding: 24px;
+  margin-bottom: 30px;
+  max-width: 560px;
+}
+
+.form-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: black;
+  margin-bottom: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.required {
+  color: #c0392b;
+}
+
+.form-input {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.form-input:focus {
+  border-color: rgb(183, 156, 75);
+}
+
+/* Chat type toggle */
+.type-toggle {
+  display: flex;
+  gap: 8px;
+}
+
+.type-btn {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: white;
+  color: #555;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.type-btn.active {
+  background-color: rgb(183, 156, 75);
+  color: white;
+  border-color: rgb(183, 156, 75);
+  font-weight: 600;
+}
+
+.type-btn:hover:not(.active) {
+  border-color: rgb(183, 156, 75);
+  color: black;
+}
+
+.form-error {
+  color: #c0392b;
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+}
+
+.form-success {
+  color: rgb(86, 134, 85);
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.submit-btn {
+  background-color: rgb(183, 156, 75);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background-color: rgb(86, 134, 85);
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.section {
+  margin-bottom: 40px;
+}
+
+.section-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: black;
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid rgb(183, 156, 75);
+}
+
+.chats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.empty-msg {
+  color: #777;
+  font-size: 0.9rem;
+}
+
+.chat-card {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 1px solid rgb(183, 156, 75);
+  transition: border-color 0.2s ease;
+}
+
+.chat-card:hover {
+  border-color: rgb(86, 134, 85);
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.chat-icon.course {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: rgb(183, 156, 75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.chat-icon.user {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: rgb(86, 134, 85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.chat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.chat-name {
+  font-size: 1rem;
+  font-weight: bold;
+  color: black;
+  margin: 0;
+}
+
+.chat-meta {
+  font-size: 0.8rem;
+  color: #777;
+}
+
+.course-number {
+  font-size: 0.8rem;
+  color: rgb(183, 156, 75);
+  font-weight: bold;
+}
+
+.join-btn {
+  margin-top: auto;
+  background-color: rgb(183, 156, 75);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.join-btn:hover {
+  background-color: rgb(86, 134, 85);
+}
+
+.join-btn.joined {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+.chat-card.clickable {
+  cursor: pointer;
+}
+
+.chat-card.clickable:hover {
+  border-color: rgb(86, 134, 85);
+  border-width: 2px;
+  background-color: whitesmoke;
 }
 
 .section {

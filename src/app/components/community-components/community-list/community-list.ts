@@ -14,35 +14,92 @@ export class CommunityList {
 
   searchTerm = '';
 
-  // All communities from Firebase
   communities = signal<{ id: string; name: string; description: string }[]>([]);
+  myCommunities = signal<{ id: string; name: string; description: string }[]>([]);
 
-  // My communities — placeholder
-  myCommunities = signal<{ id: string; name: string; description: string }[]>([
-    { id: '1', name: 'Computer Science', description: 'Discuss all things CS' },
-    { id: '2', name: 'Engineering', description: 'Engineering discussions and resources' },
-  ]);
+  isTeacher = signal(false);
+  teacherDepartment = signal<string | null>(null);
+
+  // Create community form state
+  showCreateForm = signal(false);
+  newCommunityName = '';
+  newCommunityDescription = '';
+  createSubmitting = signal(false);
+  createError = signal<string | null>(null);
+  createSuccess = signal(false);
 
   async ngOnInit(): Promise<void> {
-    await this.loadCommunities();
+    await Promise.all([this.loadCommunities(), this.loadProfile()]);
+  }
+
+  private async loadProfile(): Promise<void> {
+    const profile = await this.firebaseService.getCurrentUserProfile();
+    if (!profile) return;
+    this.isTeacher.set(profile.role === 'teacher');
+    this.teacherDepartment.set(profile.department);
   }
 
   private async loadCommunities(): Promise<void> {
     const snapshot = await this.firebaseService.getCommunityList();
     if (!snapshot) return;
 
-    const communityData = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      name: String(doc.data()['name'] ?? ''),
-      description: String(doc.data()['description'] ?? ''),
-    }));
+    const uid = this.firebaseService.currentUser()?.uid;
+    const all: { id: string; name: string; description: string }[] = [];
+    const mine: { id: string; name: string; description: string }[] = [];
 
-    this.communities.set(communityData);
+    snapshot.docs.forEach((doc) => {
+      const entry = {
+        id: doc.id,
+        name: String(doc.data()['name'] ?? ''),
+        description: String(doc.data()['description'] ?? ''),
+      };
+      all.push(entry);
+      if (uid && doc.data()['createdBy'] === uid) {
+        mine.push(entry);
+      }
+    });
+
+    this.communities.set(all);
+    this.myCommunities.set(mine);
   }
 
   get filteredCommunities() {
     return this.communities().filter((community) =>
       community.name.toLowerCase().includes(this.searchTerm.toLowerCase()),
     );
+  }
+
+  toggleCreateForm(): void {
+    this.showCreateForm.update((v) => !v);
+    this.createError.set(null);
+    this.createSuccess.set(false);
+    this.newCommunityName = '';
+    this.newCommunityDescription = '';
+  }
+
+  async submitCreateCommunity(): Promise<void> {
+    this.createError.set(null);
+    this.createSuccess.set(false);
+
+    if (!this.newCommunityName.trim()) {
+      this.createError.set('Community name is required.');
+      return;
+    }
+
+    this.createSubmitting.set(true);
+    const ok = await this.firebaseService.createCommunity({
+      name: this.newCommunityName,
+      description: this.newCommunityDescription,
+    });
+    this.createSubmitting.set(false);
+
+    if (ok) {
+      this.createSuccess.set(true);
+      this.newCommunityName = '';
+      this.newCommunityDescription = '';
+      await this.loadCommunities();
+    } else {
+      this.createError.set(this.firebaseService.currentFirestoreError() ?? 'Failed to create community.');
+    }
   }
 }

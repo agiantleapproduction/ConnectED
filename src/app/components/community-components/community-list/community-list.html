@@ -1,7 +1,59 @@
 <div class="community-container">
 
   <!-- Page Title -->
-  <h1 class="page-title">Communities</h1>
+  <div class="page-header">
+    <h1 class="page-title">Communities</h1>
+    @if (isTeacher()) {
+      <button class="create-btn" (click)="toggleCreateForm()">
+        <i class="bi bi-plus-circle"></i> {{ showCreateForm() ? 'Cancel' : 'New Community' }}
+      </button>
+    }
+  </div>
+
+  <!-- Create Community Form (teacher only) -->
+  @if (isTeacher() && showCreateForm()) {
+    <div class="create-form-card">
+      <h2 class="form-title">Create Community</h2>
+      @if (teacherDepartment()) {
+        <p class="form-hint">Department: <strong>{{ teacherDepartment() }}</strong></p>
+      }
+      <div class="form-group">
+        <label for="communityName">Name <span class="required">*</span></label>
+        <input
+          id="communityName"
+          type="text"
+          class="form-input"
+          placeholder="e.g. Computer Science"
+          [(ngModel)]="newCommunityName"
+          maxlength="80"
+        />
+      </div>
+      <div class="form-group">
+        <label for="communityDesc">Description</label>
+        <textarea
+          id="communityDesc"
+          class="form-input"
+          rows="3"
+          placeholder="What is this community about?"
+          [(ngModel)]="newCommunityDescription"
+          maxlength="300"
+        ></textarea>
+      </div>
+      @if (createError()) {
+        <p class="form-error">{{ createError() }}</p>
+      }
+      @if (createSuccess()) {
+        <p class="form-success">Community created!</p>
+      }
+      <button
+        class="submit-btn"
+        (click)="submitCreateCommunity()"
+        [disabled]="createSubmitting()"
+      >
+        {{ createSubmitting() ? 'Creating…' : 'Create Community' }}
+      </button>
+    </div>
+  }
 
   <!-- Search Bar -->
   <div class="search-bar">
@@ -13,34 +65,30 @@
     />
   </div>
 
-  <!-- My Communities Section -->
-  <div class="section">
-    <h2 class="section-title">My Communities</h2>
-    <div class="community-grid">
-
-      @for (community of myCommunities(); track community.id) {
-        <div class="community-card">
-
-          <div class="card-header">
-            <div class="community-icon">
-              <i class="bi bi-people-fill"></i>
+  <!-- My Communities Section (only for teachers who have created communities) -->
+  @if (isTeacher() && myCommunities().length > 0) {
+    <div class="section">
+      <h2 class="section-title">My Communities</h2>
+      <div class="community-grid">
+        @for (community of myCommunities(); track community.id) {
+          <div class="community-card">
+            <div class="card-header">
+              <div class="community-icon">
+                <i class="bi bi-people-fill"></i>
+              </div>
+              <div class="card-info">
+                <h3 class="community-name">{{ community.name }}</h3>
+              </div>
             </div>
-            <div class="card-info">
-              <h3 class="community-name">{{ community.name }}</h3>
-            </div>
+            <p class="community-description">{{ community.description }}</p>
+            <button class="join-btn" [routerLink]="['/community', community.id]">
+              View Group Chats
+            </button>
           </div>
-
-          <p class="community-description">{{ community.description }}</p>
-
-          <button class="join-btn" [routerLink]="['/community', community.id]">
-            View Group Chats
-          </button>
-
-        </div>
-      }
-
+        }
+      </div>
     </div>
-  </div>
+  }
 
   <!-- All Communities Section -->
   <div class="section">

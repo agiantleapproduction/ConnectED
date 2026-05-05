@@ -475,4 +475,109 @@ export class FirebaseService {
       return null;
     }
   }
+
+  async getCurrentUserProfile(): Promise<UserProfile | null> {
+    const uid = this.currentUser()?.uid;
+    if (!uid) return null;
+    try {
+      const snap = await getDoc(doc(db, 'users', uid));
+      if (!snap.exists()) return null;
+      this.currentFirestoreError.set(null);
+      return snap.data() as UserProfile;
+    } catch (error: unknown) {
+      if (error instanceof FirestoreError) {
+        this.currentFirestoreError.set(error.code + ': ' + error.message);
+      }
+      return null;
+    }
+  }
+
+  async createCommunity(payload: { name: string; description: string }): Promise<boolean> {
+    const uid = this.currentUser()?.uid;
+    if (!uid) {
+      this.currentFirestoreError.set('No authenticated user.');
+      return false;
+    }
+
+    const profile = await this.getCurrentUserProfile();
+    if (!profile || profile.role !== 'teacher') {
+      this.currentFirestoreError.set('permission-denied: Only teachers can create communities.');
+      return false;
+    }
+
+    const name = payload.name.trim();
+    const description = payload.description.trim();
+    if (!name) {
+      this.currentFirestoreError.set('validation: Community name is required.');
+      return false;
+    }
+
+    try {
+      await addDoc(collection(db, 'communities'), {
+        name,
+        description,
+        department: profile.department ?? '',
+        createdBy: uid,
+        createdAt: Date.now(),
+      });
+      this.currentFirestoreError.set(null);
+      return true;
+    } catch (error: unknown) {
+      if (error instanceof FirestoreError) {
+        this.currentFirestoreError.set(error.code + ': ' + error.message);
+      }
+      return false;
+    }
+  }
+
+  async createGroupChat(payload: { name: string; communityId: string; chatType: 'User' | 'Course'; courseNumber?: string }): Promise<string | null> {
+    const uid = this.currentUser()?.uid;
+    if (!uid) {
+      this.currentFirestoreError.set('No authenticated user.');
+      return null;
+    }
+
+    const name = payload.name.trim();
+    if (!name) {
+      this.currentFirestoreError.set('validation: Chat name is required.');
+      return null;
+    }
+
+    if (payload.chatType === 'Course') {
+      const profile = await this.getCurrentUserProfile();
+      if (!profile || profile.role !== 'teacher') {
+        this.currentFirestoreError.set('permission-denied: Only teachers can create course group chats.');
+        return null;
+      }
+      const courseNumber = (payload.courseNumber ?? '').trim();
+      if (!courseNumber) {
+        this.currentFirestoreError.set('validation: Course number is required for course chats.');
+        return null;
+      }
+    }
+
+    try {
+      const ref = await addDoc(collection(db, 'groupchats'), {
+        name,
+        communityId: payload.communityId,
+        chatType: payload.chatType,
+        courseNumber: payload.chatType === 'Course' ? (payload.courseNumber ?? '').trim() : '',
+        users: [uid],
+        createdBy: uid,
+        createdAt: Date.now(),
+      });
+
+      await updateDoc(doc(db, 'users', uid), {
+        groupChatIds: arrayUnion(ref.id),
+      });
+
+      this.currentFirestoreError.set(null);
+      return ref.id;
+    } catch (error: unknown) {
+      if (error instanceof FirestoreError) {
+        this.currentFirestoreError.set(error.code + ': ' + error.message);
+      }
+      return null;
+    }
+  }
 }
