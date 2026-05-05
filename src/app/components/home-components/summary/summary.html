@@ -1,33 +1,9 @@
-<div class="feed-container">
-  @for (post of posts; track post.name) {
-    <div class="post-card">
-      <div class="post-header">
-        <div class="avatar">
-          <i class="bi bi-person-circle"></i>
-        </div>
-        <div class="post-meta">
-          <div class="post-top-row">
-            <span class="username">{{ post.name }}</span>
-            <span class="community-badge">{{ post.community }}</span>
-            <span class="post-date">{{ post.date }}</span>
-          </div>
-          <span class="role-label {{ post.roleType }}">{{ post.role }}</span>
-        </div>
-      </div>
-
-      <div class="post-body">
-        <p>{{ post.body }}</p>
-      </div>
-
-      <div class="post-actions">
-        <span>Reply</span>
-        <span class="dot">•</span>
-        <span>Edit</span>
-        <span class="dot">•</span>
-        <span>Delete</span>
-        <span class="dot">•</span>
-        <span>Like</span>
-      </div>
-    </div>
-  }
+<div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">latest posts</h5>
+    <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
+    <a href="#" class="card-link">Card link</a>
+    <a href="#" class="card-link">Another link</a>
+  </div>
 </div>

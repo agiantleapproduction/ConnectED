@@ -1,9 +1,46 @@
 <div class="dashboard-container">
-  <app-summary></app-summary>
+  <div class="row">
+    @for (item of [0, 1, 2, 3, 4, 5]; track item) {
+      <div class="col-md-4">
+        <app-summary></app-summary>
+      </div>
+    }
+  </div>
 
-  <!-- Floating action button (something I learned from Claude) -->
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card" style="width: 18rem">
+        <div class="card-body">
+          <h5 class="card-title">Group CHat Activity</h5>
+          <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
+          <p class="card-text">
+            Some quick example text to build on the card title and make up the bulk of the card’s
+            content.
+          </p>
+          <a href="#" class="card-link">Card link</a>
+          <a href="#" class="card-link">Another link</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card" style="width: 18rem">
+        <div class="card-body">
+          <h5 class="card-title">Recent group chats</h5>
+          <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
+          <p class="card-text">
+            Some quick example text to build on the card title and make up the bulk of the card’s
+            content.
+          </p>
+          <a href="#" class="card-link">Card link</a>
+          <a href="#" class="card-link">Another link</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating action button (something I learned from Claude)
   <div class="icon">
     <i class="bi bi-plus"></i>
-    <!-- i is the standard way to display icons -->
-  </div>
+    i is the standard way to display icons
+  </div> -->
 </div>

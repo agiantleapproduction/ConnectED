@@ -1,4 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { FirebaseService } from '../../../services/firebase';
+
+interface Post {
+  name: string;
+  community: string;
+  date: string;
+  roleType: string;
+  role: string;
+  body: string;
+  likes: number;
+}
 
 @Component({
   selector: 'app-summary',
@@ -6,50 +17,64 @@ import { Component } from '@angular/core';
   templateUrl: './summary.html',
   styleUrl: './summary.css',
 })
-export class Summary {
-  posts = [
-    {
-      name: 'Student 1',
-      community: 'Community Name',
-      date: '27, April 2026',
-      role: 'Computer Science Major',
-      roleType: 'student', //controls pink vs yellow color
-      body: 'Computer Science assignment 5 took forever. But it eas good practice!',
-    },
-    {
-      name: 'Teacher 1',
-      community: 'Community Name',
-      date: '25, April 2026',
-      role: 'Computer Science Instructor',
-      roleType: 'teacher',
-      body: "Class, assignment 5 will be do two weeks from now. Start on it early I wouldn't wait last minute.",
-    },
+export class Summary implements OnInit {
+  private firebase = inject(FirebaseService);
 
-    {
-      name: 'Student 2',
-      community: 'Community Name',
-      date: '26, April 2026',
-      role: 'Software Engineer Major',
-      roleType: 'student',
-      body: 'Anyone taking database systems next semester?',
-    },
+  posts: Post[] = [];
 
-    {
-      name: 'Teacher 1',
-      community: 'Community Name',
-      date: '25, April 2026',
-      role: 'Computer Science Instructor',
-      roleType: 'teacher',
-      body: "Class, assignment 5 will be do two weeks from now. Start on it early I wouldn't wait last minute.",
-    },
+  ngOnInit(): void {
+    this.loadPosts();
+  }
 
-    {
-      name: 'Student 1',
-      community: 'Community Name',
-      date: '27, April 2026',
-      role: 'Computer Science Major',
-      roleType: 'student', //controls pink vs yellow color
-      body: 'Computer Science assignment 5 took forever. But it eas good practice!',
-    },
-  ];
+  loadPosts(): void {
+    this.posts = [
+      {
+        name: 'Jane Doe',
+        community: 'Computer Science161',
+        date: 'May 3, 2026',
+        roleType: 'student',
+        role: 'Student',
+        body: "Does anyone have notes from last week's lecture on recursion? I missed class.",
+        likes: 4,
+      },
+      {
+        name: 'Prof. Smith',
+        community: 'Mathematics160',
+        date: 'May 2, 2026',
+        roleType: 'instructor',
+        role: 'Instructor',
+        body: 'Office hours are moved to Thursday 3–5 PM this week.',
+        likes: 12,
+      },
+      {
+        name: 'Alex Johnson',
+        community: 'Engineering213',
+        date: 'May 1, 2026',
+        roleType: 'student',
+        role: 'Student',
+        body: "Great study session today! Who's up for another one before finals?",
+        likes: 7,
+      },
+    ];
+  }
+
+  replyToPost(post: Post): void {
+    console.log('Reply to post by:', post.name);
+  }
+
+  editPost(post: Post): void {
+    const user = this.firebase.currentUser();
+    if (!user) return;
+    console.log('Edit post by:', post.name);
+  }
+
+  deletePost(post: Post): void {
+    const user = this.firebase.currentUser();
+    if (!user) return;
+    this.posts = this.posts.filter((p) => p !== post);
+  }
+
+  likePost(post: Post): void {
+    post.likes++;
+  }
 }
