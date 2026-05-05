@@ -125,3 +125,13 @@
   background-color: #aaa;
   cursor: not-allowed;
 }
+
+.chat-card.clickable {
+  cursor: pointer;
+}
+
+.chat-card.clickable:hover {
+  border-color: rgb(86, 134, 85);
+  border-width: 2px;
+  background-color: whitesmoke;
+}
