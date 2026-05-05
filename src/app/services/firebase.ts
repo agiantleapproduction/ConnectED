@@ -282,8 +282,14 @@ export class FirebaseService {
   async isUserInGroupChat(groupChatId: string): Promise<boolean> {
     const uid = this.currentUser()?.uid;
     if (!uid) return false;
-    const joined = await this.getUserGroupChats();
-    return joined.includes(groupChatId);
+    try {
+      const snap = await getDoc(doc(db, 'groupchats', groupChatId));
+      if (!snap.exists()) return false;
+      const users: string[] = snap.data()['users'] ?? [];
+      return users.includes(uid);
+    } catch {
+      return false;
+    }
   }
 
   async createGroupPost(payload: CreatePostPayload): Promise<Post | null> {
@@ -330,11 +336,12 @@ export class FirebaseService {
       const q = query(
         collection(db, 'posts'),
         where('groupChatId', '==', groupChatId),
-        orderBy('createdAt', 'asc'),
       );
       const snapshot = await getDocs(q);
       this.currentFirestoreError.set(null);
-      return snapshot.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<Post, 'id'>) }));
+      return snapshot.docs
+        .map((d) => ({ id: d.id, ...(d.data() as Omit<Post, 'id'>) }))
+        .sort((a, b) => a.createdAt - b.createdAt);
     } catch (error: unknown) {
       if (error instanceof FirestoreError) {
         this.currentFirestoreError.set(error.code + ': ' + error.message);

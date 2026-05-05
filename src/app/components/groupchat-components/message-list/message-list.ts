@@ -52,7 +52,11 @@ export class MessageList implements OnChanges {
       body,
     });
     if (created) {
+      // Optimistic update so the post appears immediately, then confirm from server
       this.posts.update((list) => [...list, created]);
+      // Reload from Firestore to get the authoritative sorted list
+      const fresh = await this.firebase.getGroupPosts(this.groupChatId);
+      if (fresh.length > 0) this.posts.set(fresh);
     } else {
       this.error.set(this.firebase.currentFirestoreError());
     }
