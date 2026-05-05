@@ -447,7 +447,7 @@ export class FirebaseService {
     }
   }
 
-  async getGroupChatInfo(groupChatId: string): Promise<{ id: string; name: string; communityId: string } | null> {
+  async getGroupChatInfo(groupChatId: string): Promise<{ id: string; name: string; communityId: string; chatType: string; courseNumber: string; memberCount: number } | null> {
     try {
       const snap = await getDoc(doc(db, 'groupchats', groupChatId));
       if (!snap.exists()) return null;
@@ -457,6 +457,9 @@ export class FirebaseService {
         id: snap.id,
         name: String(data['name'] ?? ''),
         communityId: String(data['communityId'] ?? ''),
+        chatType: String(data['chatType'] ?? ''),
+        courseNumber: String(data['courseNumber'] ?? ''),
+        memberCount: (data['users'] as string[] | undefined)?.length ?? 0,
       };
     } catch (error: unknown) {
       if (error instanceof FirestoreError) {

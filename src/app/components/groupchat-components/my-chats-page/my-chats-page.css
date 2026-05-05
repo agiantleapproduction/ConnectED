@@ -1,0 +1,145 @@
+.my-chats-container {
+  min-height: 100vh;
+  background-color: #1a2b1c;
+  color: white;
+  padding: 32px 28px;
+}
+
+.page-header {
+  margin-bottom: 28px;
+}
+
+.page-title {
+  font-size: 1.9rem;
+  font-weight: bold;
+  color: white;
+  margin: 0 0 4px;
+}
+
+.page-subtitle {
+  color: #aaa;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.state-msg {
+  color: #888;
+  font-size: 0.95rem;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-top: 80px;
+  color: #888;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 3.5rem;
+  color: #3d5c42;
+}
+
+.browse-btn {
+  background-color: rgb(183, 156, 75);
+  color: white;
+  text-decoration: none;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease;
+}
+
+.browse-btn:hover {
+  background-color: rgb(86, 134, 85);
+  color: white;
+}
+
+.chats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  max-width: 960px;
+}
+
+.chat-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background-color: #2e4832;
+  border: 1px solid #3d5c42;
+  border-radius: 10px;
+  padding: 18px 16px;
+  text-decoration: none;
+  color: white;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.chat-card:hover {
+  border-color: rgb(86, 134, 85);
+  background-color: #364f3a;
+  color: white;
+}
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.card-icon.course {
+  background-color: rgb(183, 156, 75);
+  color: white;
+}
+
+.card-icon.user {
+  background-color: rgb(86, 134, 85);
+  color: white;
+}
+
+.card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.card-name {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 0;
+  color: white;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-course {
+  font-size: 0.8rem;
+  color: rgb(183, 156, 75);
+  font-weight: 600;
+}
+
+.card-members {
+  font-size: 0.8rem;
+  color: #aaa;
+}
+
+.card-arrow {
+  color: #555;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.chat-card:hover .card-arrow {
+  color: #aaa;
+}

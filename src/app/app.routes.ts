@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { Dashboard } from './components/home-components/dashboard/dashboard';
 import { CommunityList } from './components/community-components/community-list/community-list';
 import { GroupCard } from './components/community-components/group-card/group-card';
-import { MessageList } from './components/groupchat-components/message-list/message-list';
+import { MyChatsPage } from './components/groupchat-components/my-chats-page/my-chats-page';
 import { GroupChatPage } from './components/groupchat-components/group-chat-page/group-chat-page';
 import { NewsFeed } from './components/news-components/news-feed/news-feed';
 import { Login } from './components/login/login';
@@ -35,8 +35,8 @@ export const routes: Routes = [
   },
   {
     path: 'groupchat',
-    component: MessageList,
-    title: 'Group Chats',
+    component: MyChatsPage,
+    title: 'My Group Chats',
     canActivate: [authGuard],
   },
   {

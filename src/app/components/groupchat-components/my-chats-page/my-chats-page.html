@@ -1,0 +1,36 @@
+<div class="my-chats-container">
+  <header class="page-header">
+    <h1 class="page-title">My Group Chats</h1>
+    <p class="page-subtitle">Chats you have joined. Click a chat to open it.</p>
+  </header>
+
+  @if (loading()) {
+    <p class="state-msg">Loading your chats...</p>
+  } @else if (chats().length === 0) {
+    <div class="empty-state">
+      <i class="bi bi-chat-left-dots empty-icon"></i>
+      <p>You haven't joined any group chats yet.</p>
+      <a routerLink="/community" class="browse-btn">Browse Communities</a>
+    </div>
+  } @else {
+    <div class="chats-grid">
+      @for (chat of chats(); track chat.id) {
+        <a class="chat-card" [routerLink]="['/groupchat', chat.id]">
+          <div class="card-icon" [class.course]="chat.chatType === 'Course'" [class.user]="chat.chatType !== 'Course'">
+            <i class="bi" [class.bi-book-fill]="chat.chatType === 'Course'" [class.bi-people-fill]="chat.chatType !== 'Course'"></i>
+          </div>
+          <div class="card-info">
+            <h3 class="card-name">{{ chat.name }}</h3>
+            @if (chat.courseNumber) {
+              <span class="card-course">{{ chat.courseNumber }}</span>
+            }
+            <span class="card-members">
+              <i class="bi bi-person"></i> {{ chat.memberCount }} member{{ chat.memberCount === 1 ? '' : 's' }}
+            </span>
+          </div>
+          <i class="bi bi-chevron-right card-arrow"></i>
+        </a>
+      }
+    </div>
+  }
+</div>
