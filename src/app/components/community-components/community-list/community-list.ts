@@ -99,7 +99,9 @@ export class CommunityList {
       this.newCommunityDescription = '';
       await this.loadCommunities();
     } else {
-      this.createError.set(this.firebaseService.currentFirestoreError() ?? 'Failed to create community.');
+      this.createError.set(
+        this.firebaseService.currentFirestoreError() ?? 'Failed to create community.',
+      );
     }
   }
 }
