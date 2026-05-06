@@ -1,0 +1,110 @@
+<div class="profile-page">
+  @if (loading()) {
+    <div class="loading-state">
+      <div class="spinner-border text-success" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  } @else if (!profile()) {
+    <div class="profile-card">
+      <div class="error-banner">Could not load profile. Please try refreshing.</div>
+    </div>
+  } @else {
+    <div class="profile-card">
+      <div class="profile-header">
+        <div class="avatar">{{ initials }}</div>
+        <div class="profile-header-info">
+          <h2 class="profile-name">{{ profile()!.name }}</h2>
+          <span class="role-badge role-{{ profile()!.role }}">{{ roleLabel }}</span>
+        </div>
+      </div>
+
+      @if (saveSuccess()) {
+        <div class="success-banner">Profile updated successfully.</div>
+      }
+
+      @if (firestoreError()) {
+        <div class="error-banner">{{ firestoreError() }}</div>
+      }
+
+      @if (!editing()) {
+        <div class="profile-fields">
+          <div class="field-row">
+            <span class="field-label">Name</span>
+            <span class="field-value">{{ profile()!.name }}</span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Email</span>
+            <span class="field-value">{{ profile()!.email }}</span>
+          </div>
+          @if (profile()!.role === 'student') {
+            <div class="field-row">
+              <span class="field-label">Major</span>
+              <span class="field-value">{{ profile()!.major ?? '—' }}</span>
+            </div>
+          }
+          @if (profile()!.role === 'teacher') {
+            <div class="field-row">
+              <span class="field-label">Department</span>
+              <span class="field-value">{{ profile()!.department ?? '—' }}</span>
+            </div>
+          }
+          <div class="field-row">
+            <span class="field-label">Group Chats</span>
+            <span class="field-value">{{ profile()!.groupChatIds.length }} joined</span>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-edit" (click)="startEdit()">Edit Profile</button>
+      } @else {
+        <div class="profile-fields">
+          <div class="field-row edit-row">
+            <label class="field-label" for="editName">Name</label>
+            <input
+              id="editName"
+              class="form-control"
+              type="text"
+              [(ngModel)]="editName"
+              name="editName"
+              placeholder="Your name"
+              required
+            />
+          </div>
+          <div class="field-row">
+            <span class="field-label">Email</span>
+            <span class="field-value muted">{{ profile()!.email }}</span>
+          </div>
+          @if (profile()!.role === 'student') {
+            <div class="field-row edit-row">
+              <label class="field-label" for="editMajor">Major</label>
+              <select id="editMajor" class="form-select" [(ngModel)]="editMajor" name="editMajor">
+                <option value="">— Select major —</option>
+                @for (major of majors(); track major) {
+                  <option [value]="major">{{ major }}</option>
+                }
+              </select>
+            </div>
+          }
+          @if (profile()!.role === 'teacher') {
+            <div class="field-row edit-row">
+              <label class="field-label" for="editDepartment">Department</label>
+              <select id="editDepartment" class="form-select" [(ngModel)]="editDepartment" name="editDepartment">
+                <option value="">— Select department —</option>
+                @for (dept of departments(); track dept) {
+                  <option [value]="dept">{{ dept }}</option>
+                }
+              </select>
+            </div>
+          }
+        </div>
+        <div class="edit-actions">
+          <button class="btn btn-outline-secondary" (click)="cancelEdit()" [disabled]="saving()">
+            Cancel
+          </button>
+          <button class="btn btn-primary" (click)="saveEdit()" [disabled]="saving() || !editName.trim()">
+            @if (saving()) { Saving… } @else { Save Changes }
+          </button>
+        </div>
+      }
+    </div>
+  }
+</div>

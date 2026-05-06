@@ -1,0 +1,171 @@
+.profile-page {
+  min-height: calc(100vh - 60px);
+  background: var(--ce-bg-page);
+  display: flex;
+  justify-content: center;
+  padding: 2.5rem 1rem;
+}
+
+.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: var(--ce-green);
+}
+
+.profile-card {
+  background: var(--ce-bg-surface);
+  border: 1px solid var(--ce-border);
+  border-radius: var(--ce-radius-xl);
+  padding: 2rem;
+  width: 100%;
+  max-width: 560px;
+  height: fit-content;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* ── Header ── */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 1.75rem;
+}
+
+.avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--ce-green);
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: 0.03em;
+}
+
+.profile-header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.profile-name {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ce-text-primary);
+  margin: 0;
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 0.2em 0.8em;
+  border-radius: var(--ce-radius-pill);
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  width: fit-content;
+}
+
+.role-student {
+  background: #e8f4fd;
+  color: #1a6fa8;
+}
+
+.role-teacher {
+  background: #edf7ed;
+  color: var(--ce-green);
+}
+
+/* ── Fields ── */
+.profile-fields {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.field-row {
+  display: flex;
+  align-items: center;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--ce-border);
+  gap: 1rem;
+}
+
+.profile-fields .field-row:first-child {
+  border-top: 1px solid var(--ce-border);
+}
+
+.field-label {
+  width: 120px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ce-text-sub);
+  flex-shrink: 0;
+}
+
+.field-value {
+  font-size: 0.95rem;
+  color: var(--ce-text-primary);
+}
+
+.field-value.muted {
+  color: var(--ce-text-muted);
+  font-size: 0.9rem;
+}
+
+/* ── Edit inputs ── */
+.edit-row .form-control,
+.edit-row .form-select {
+  flex: 1;
+  background: var(--ce-bg-input);
+  border-color: var(--ce-border);
+  font-size: 0.93rem;
+}
+
+.edit-row .form-control:focus,
+.edit-row .form-select:focus {
+  border-color: var(--ce-border-focus);
+  box-shadow: 0 0 0 3px rgba(0, 80, 48, 0.12);
+}
+
+/* ── Actions ── */
+.btn-edit {
+  width: 100%;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.edit-actions .btn {
+  min-width: 130px;
+}
+
+/* ── Banners ── */
+.success-banner {
+  background: #edf7ed;
+  color: var(--ce-success-text);
+  border: 1px solid #b2dfb2;
+  border-radius: var(--ce-radius-md);
+  padding: 0.65rem 1rem;
+  font-size: 0.88rem;
+  margin-bottom: 1rem;
+}
+
+.error-banner {
+  background: var(--ce-error-bg);
+  color: var(--ce-error-text);
+  border: 1px solid #f5c6c6;
+  border-radius: var(--ce-radius-md);
+  padding: 0.65rem 1rem;
+  font-size: 0.88rem;
+  margin-bottom: 1rem;
+}

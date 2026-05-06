@@ -476,6 +476,28 @@ export class FirebaseService {
     }
   }
 
+  async updateUserProfile(updates: Partial<Pick<UserProfile, 'name' | 'major' | 'department'>>): Promise<boolean> {
+    const uid = this.currentUser()?.uid;
+    if (!uid) {
+      this.currentFirestoreError.set('No authenticated user.');
+      return false;
+    }
+
+    try {
+      await updateDoc(doc(db, 'users', uid), updates as Record<string, unknown>);
+      if (updates.name) {
+        await updateProfile(this.currentUser()!, { displayName: updates.name });
+      }
+      this.currentFirestoreError.set(null);
+      return true;
+    } catch (error: unknown) {
+      if (error instanceof FirestoreError) {
+        this.currentFirestoreError.set(error.code + ': ' + error.message);
+      }
+      return false;
+    }
+  }
+
   async getCurrentUserProfile(): Promise<UserProfile | null> {
     const uid = this.currentUser()?.uid;
     if (!uid) return null;

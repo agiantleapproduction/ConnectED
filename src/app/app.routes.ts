@@ -8,6 +8,7 @@ import { NewsFeed } from './components/news-components/news-feed/news-feed';
 import { Login } from './components/login/login';
 import { authGuard } from './guards/auth.guard';
 import { NewUser } from './components/new-user/new-user';
+import { Profile } from './components/profile/profile';
 
 export const routes: Routes = [
   {
@@ -49,6 +50,12 @@ export const routes: Routes = [
     path: 'news',
     component: NewsFeed,
     title: 'News Feed',
+    canActivate: [authGuard],
+  },
+  {
+    path: 'profile',
+    component: Profile,
+    title: 'My Profile',
     canActivate: [authGuard],
   },
   {
