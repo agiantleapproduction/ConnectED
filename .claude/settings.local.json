@@ -1,7 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "PowerShell(Get-ChildItem -Path \"c:\\\\Users\\\\Joe\\\\Desktop\\\\313final\\\\src\" -Recurse -Force | Where-Object { -not $_.FullName.Contains\\('node_modules'\\) } | Select-Object FullName, PSIsContainer | Format-Table -AutoSize)"
-    ]
-  }
-}
