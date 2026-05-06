@@ -24,5 +24,6 @@
 }
 
 .feed-wrapper {
-  max-width: 720px;
+  max-width: 950;
+  margin: 0 auto;
 }
