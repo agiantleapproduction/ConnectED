@@ -13,7 +13,7 @@
           <div class="post-meta">
             <div class="post-top-row">
               <span class="username">{{ post.authorName }}</span>
-              <span class="community-badge">{{ post.groupChatId }}</span>
+              <span class="community-badge">{{ groupChatNames()[post.groupChatId] }}</span>
             </div>
             <span class="post-date">{{ formatDate(post.createdAt) }}</span>
           </div>
