@@ -15,6 +15,7 @@ export class Summary implements OnInit {
   posts = signal<Post[]>([]);
   loading = signal(true);
   error = signal<string | null>(null);
+  groupChatNames = signal<Record<string, string>>({});
 
   ngOnInit(): void {
     this.loadPosts();
@@ -26,6 +27,16 @@ export class Summary implements OnInit {
     const err = this.firebase.currentFirestoreError();
     if (err) this.error.set(err);
     this.posts.set(result);
+
+    const uniqueIds = [...new Set(result.map((p) => p.groupChatId))];
+    const entries = await Promise.all(
+      uniqueIds.map(async (id) => {
+        const info = await this.firebase.getGroupChatInfo(id);
+        return [id, info?.name ?? id] as const;
+      }),
+    );
+    this.groupChatNames.set(Object.fromEntries(entries));
+
     this.loading.set(false);
   }
 
