@@ -27,6 +27,10 @@ import {
   signOut,
   onAuthStateChanged,
   updateProfile,
+  updatePassword,
+  updateEmail,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
 } from 'firebase/auth';
 import { UserProfile } from '../models/user-profile';
 import { Post, CreatePostPayload, UpdatePostPayload } from '../models/post';
@@ -492,6 +496,48 @@ export class FirebaseService {
       return true;
     } catch (error: unknown) {
       if (error instanceof FirestoreError) {
+        this.currentFirestoreError.set(error.code + ': ' + error.message);
+      }
+      return false;
+    }
+  }
+
+  async changePassword(currentPassword: string, newPassword: string): Promise<boolean> {
+    const user = this.currentUser();
+    if (!user || !user.email) {
+      this.currentFirestoreError.set('No authenticated user.');
+      return false;
+    }
+    try {
+      const credential = EmailAuthProvider.credential(user.email, currentPassword);
+      await reauthenticateWithCredential(user, credential);
+      await updatePassword(user, newPassword);
+      this.currentFirestoreError.set(null);
+      return true;
+    } catch (error: unknown) {
+      if (error instanceof FirebaseError) {
+        this.currentFirestoreError.set(error.code + ': ' + error.message);
+      }
+      return false;
+    }
+  }
+
+  async changeEmail(currentPassword: string, newEmail: string): Promise<boolean> {
+    const user = this.currentUser();
+    if (!user || !user.email) {
+      this.currentFirestoreError.set('No authenticated user.');
+      return false;
+    }
+    try {
+      const credential = EmailAuthProvider.credential(user.email, currentPassword);
+      await reauthenticateWithCredential(user, credential);
+      await updateEmail(user, newEmail);
+      const uid = user.uid;
+      await updateDoc(doc(db, 'users', uid), { email: newEmail });
+      this.currentFirestoreError.set(null);
+      return true;
+    } catch (error: unknown) {
+      if (error instanceof FirebaseError) {
         this.currentFirestoreError.set(error.code + ': ' + error.message);
       }
       return false;
