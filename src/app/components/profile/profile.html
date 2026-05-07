@@ -23,6 +23,14 @@
         <div class="success-banner">Profile updated successfully.</div>
       }
 
+      @if (passwordSuccess()) {
+        <div class="success-banner">Password changed successfully.</div>
+      }
+
+      @if (emailSuccess()) {
+        <div class="success-banner">Email updated successfully.</div>
+      }
+
       @if (firestoreError()) {
         <div class="error-banner">{{ firestoreError() }}</div>
       }
@@ -55,6 +63,8 @@
           </div>
         </div>
         <button class="btn btn-primary btn-edit" (click)="startEdit()">Edit Profile</button>
+        <button class="btn btn-outline-secondary btn-edit" (click)="startChangeEmail()">Change Email</button>
+        <button class="btn btn-outline-secondary btn-edit" (click)="startChangePassword()">Change Password</button>
       } @else {
         <div class="profile-fields">
           <div class="field-row edit-row">
@@ -102,6 +112,54 @@
           </button>
           <button class="btn btn-primary" (click)="saveEdit()" [disabled]="saving() || !editName.trim()">
             @if (saving()) { Saving… } @else { Save Changes }
+          </button>
+        </div>
+      }
+
+      @if (changingEmail()) {
+        <div class="profile-fields">
+          @if (emailError()) {
+            <div class="error-banner">{{ emailError() }}</div>
+          }
+          <div class="field-row edit-row">
+            <label class="field-label" for="emailCurrentPassword">Current Password</label>
+            <input id="emailCurrentPassword" class="form-control" type="password" [(ngModel)]="emailCurrentPassword" name="emailCurrentPassword" placeholder="Confirm your password" />
+          </div>
+          <div class="field-row edit-row">
+            <label class="field-label" for="newEmail">New Email</label>
+            <input id="newEmail" class="form-control" type="email" [(ngModel)]="newEmail" name="newEmail" placeholder="New email address" />
+          </div>
+        </div>
+        <div class="edit-actions">
+          <button class="btn btn-outline-secondary" (click)="cancelChangeEmail()" [disabled]="emailSaving()">Cancel</button>
+          <button class="btn btn-primary" (click)="saveEmail()" [disabled]="emailSaving() || !emailCurrentPassword || !newEmail">
+            @if (emailSaving()) { Saving… } @else { Update Email }
+          </button>
+        </div>
+      }
+
+      @if (changingPassword()) {
+        <div class="profile-fields">
+          @if (passwordError()) {
+            <div class="error-banner">{{ passwordError() }}</div>
+          }
+          <div class="field-row edit-row">
+            <label class="field-label" for="currentPassword">Current Password</label>
+            <input id="currentPassword" class="form-control" type="password" [(ngModel)]="currentPassword" name="currentPassword" placeholder="Current password" />
+          </div>
+          <div class="field-row edit-row">
+            <label class="field-label" for="newPassword">New Password</label>
+            <input id="newPassword" class="form-control" type="password" [(ngModel)]="newPassword" name="newPassword" placeholder="New password (min 6 chars)" />
+          </div>
+          <div class="field-row edit-row">
+            <label class="field-label" for="confirmPassword">Confirm Password</label>
+            <input id="confirmPassword" class="form-control" type="password" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Confirm new password" />
+          </div>
+        </div>
+        <div class="edit-actions">
+          <button class="btn btn-outline-secondary" (click)="cancelChangePassword()" [disabled]="passwordSaving()">Cancel</button>
+          <button class="btn btn-primary" (click)="savePassword()" [disabled]="passwordSaving() || !currentPassword || !newPassword || !confirmPassword">
+            @if (passwordSaving()) { Saving… } @else { Update Password }
           </button>
         </div>
       }
